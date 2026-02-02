@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STRES – Komplexný sprievodca duševnou záťažou</title>
+
+<style>
+/* =========================================================
+   RESET + DESIGN SYSTEM
+========================================================= */
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+img{max-width:100%;display:block}
+button,input,select{font:inherit}
+
+:root{
+  --bg0:#02040a;
+  --bg1:#05070c;
+  --glass:rgba(255,255,255,.08);
+  --glass-strong:rgba(255,255,255,.14);
+
+  --primary:#6be7ff;
+  --secondary:#b388ff;
+  --accent:#5eead4;
+  --warn:#facc15;
+  --danger:#fb7185;
+
+  --text:#eef2f8;
+  --muted:#9aa4b2;
+
+  --r-xl:32px;
+  --r-lg:22px;
+  --r-md:14px;
+
+  --shadow-soft:0 20px 60px rgba(0,0,0,.55);
+  --shadow-card:0 10px 30px rgba(0,0,0,.45);
+
+  --max-w:1280px;
+}
+
+/* =========================================================
+   BASE
+========================================================= */
+body{
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:
+    radial-gradient(1000px 700px at 10% 0%, rgba(107,231,255,.18), transparent),
+    radial-gradient(900px 600px at 90% 10%, rgba(179,136,255,.18), transparent),
+    linear-gradient(180deg,var(--bg0),var(--bg1) 70%);
+  color:var(--text);
+  line-height:1.85;
+}
+
+/* =========================================================
+   TYPOGRAPHY
+========================================================= */
+h1,h2,h3,h4{line-height:1.15;margin:0}
+h1{
+  font-size:clamp(3.5rem,7vw,4.8rem);
+  font-weight:900;
+}
+h2{
+  font-size:clamp(2.4rem,4vw,3.2rem);
+  text-align:center;
+  margin-bottom:3.5rem;
+}
+h3{font-size:1.55rem;margin-bottom:.6rem}
+p{color:var(--muted)}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+header,section,footer{padding:7rem 2rem}
+.container{max-width:var(--max-w);margin:auto}
+
+/* =========================================================
+   HERO
+========================================================= */
+header{text-align:center}
+header h1{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.hero-actions{
+  margin-top:3rem;
+  display:flex;
+  justify-content:center;
+  gap:1.5rem;
+  flex-wrap:wrap;
+}
+.hero-actions a{
+  padding:1.2rem 3.2rem;
+  border-radius:999px;
+  font-weight:900;
+  text-decoration:none;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#02040a;
+}
+.btn-secondary{
+  border:1px solid rgba(255,255,255,.3);
+  color:var(--text);
+}
+
+/* =========================================================
+   CARDS & GRID
+========================================================= */
+.card{
+  background:var(--glass);
+  border-radius:var(--r-xl);
+  padding:3.5rem;
+  box-shadow:var(--shadow-card);
+  border:1px solid rgba(255,255,255,.12);
+  margin-bottom:3rem;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:2.5rem;
+}
+
+/* =========================================================
+   INFO BLOCKS
+========================================================= */
+.info{
+  background:var(--glass-strong);
+  border-left:5px solid var(--accent);
+  padding:1.8rem 2.5rem;
+  border-radius:var(--r-md);
+  margin-top:2rem;
+}
+
+/* =========================================================
+   TEST
+========================================================= */
+.test-question{margin-bottom:1.8rem}
+label{font-weight:700}
+select{
+  width:100%;
+  margin-top:.4rem;
+  padding:.8rem;
+  border-radius:12px;
+  background:#02040a;
+  color:var(--text);
+  border:none;
+}
+button{
+  margin-top:2.5rem;
+  padding:1.2rem 3.2rem;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  font-weight:900;
+  cursor:pointer;
+}
+.result{
+  margin-top:3rem;
+  padding:2.8rem;
+  border-radius:var(--r-lg);
+}
+.low{background:rgba(94,234,212,.28)}
+.mid{background:rgba(250,204,21,.28)}
+.high{background:rgba(251,113,133,.3)}
+small{display:block;margin-top:1.2rem;color:var(--muted)}
+
+/* =========================================================
+   CTA + FOOTER
+========================================================= */
+.cta{
+  background:linear-gradient(135deg,#7dd3fc,#a78bfa);
+  color:#02040a;
+  text-align:center;
+}
+.cta a{
+  display:inline-block;
+  margin-top:2.5rem;
+  background:#02040a;
+  color:#fff;
+  padding:1.2rem 3.5rem;
+  border-radius:999px;
+  text-decoration:none;
+  font-weight:900;
+}
+footer{
+  background:#02040a;
+  text-align:center;
+  color:var(--muted);
+  font-size:.95rem;
+}
+</style>
+</head>
+
+<body>
+
+<nav class="main-nav">
+  <div class="nav-inner">
+    <div class="nav-links">
+
+  <!-- PODSTRÁNKY (INÉ OBRAZOVKY) -->
+  <a href="#" onclick="openMovement(); return false;">Pohyb</a>
+  <a href="#" onclick="openSleep(); return false;">Spánok</a>
+  <a href="#" onclick="openMealplan(); return false;">Jedálniček</a>
+  <a href="#" onclick="openLifestyle(); return false;">Životný štýl</a>
+
+  <a href="#" onclick="showMain(); return false;">Čo je stres</a>
+  <a href="#" onclick="showMain(); return false;">Dopady</a>
+  <a href="#" onclick="showMain(); return false;">Zvládanie</a>
+  <a href="#" onclick="showMain(); return false;">Test</a>
+  <a href="#" onclick="showMain(); return false;">FAQ</a>
+
+
+</div>
+  </div>
+</nav>
+
+
+<style>
+.main-nav{
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  z-index:1000;
+  background:rgba(2,4,10,.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.nav-inner{
+  max-width:1280px;
+  margin:auto;
+  padding:1rem 2rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.nav-links a{
+  margin-left:1.5rem;
+  color:#eef2f8;
+  text-decoration:none;
+  font-weight:700;
+}
+.nav-links a:hover{
+  color:#6be7ff;
+}
+body{padding-top:80px;}
+</style>
+
+<header>
+  <div class="container">
+    <h1>STRES</h1>
+    <p>
+      Najkomplexnejší edukačný a preventívny sprievodca stresom – jeho mechanizmami,
+      dopadmi, prevenciou a praktickým zvládaním v modernom svete.
+    </p>
+    <div class="hero-actions">
+      <a href="#" onclick="showMain(); return false;" class="btn-primary">
+  Zisti úroveň stresu
+</a>
+
+      <a href="#" onclick="showMain(); return false;" class="btn-secondary">
+  Vzdelávací obsah
+</a>
+    </div>
+  </div>
+</header>
+
+<section id="knowledge">
+  <div class="container">
+    <h2>Čo je stres</h2>
+    <div class="card">
+      <p>
+        Stres je komplexná biopsychosociálna reakcia organizmu na vnútorné
+        alebo vonkajšie požiadavky, ktoré sú vnímané ako ohrozujúce
+        alebo presahujúce adaptačné zdroje jedinca.
+      </p>
+      <p>
+        Aktivuje nervový systém, hormonálnu os HPA a ovplyvňuje prakticky
+        všetky telesné aj psychické funkcie.
+      </p>
+      <div class="info">
+        Rozhodujúcimi faktormi nie sú samotné udalosti,
+        ale ich interpretácia, trvanie a miera regenerácie.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Typy stresu</h2>
+    <div class="grid">
+      <div class="card"><h3>Akútny stres</h3><p>Krátkodobá reakcia na okamžitú záťaž.</p></div>
+      <div class="card"><h3>Chronický stres</h3><p>Dlhodobý stav s kumulatívnymi následkami.</p></div>
+      <div class="card"><h3>Eustres</h3><p>Motivačný stres podporujúci výkon a rast.</p></div>
+      <div class="card"><h3>Distres</h3><p>Deštruktívny stres vedúci k vyčerpaniu.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="impacts">
+  <div class="container">
+    <h2>Dopady stresu</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Psychické</h3>
+        <p>Úzkosť, depresia, vyhorenie, poruchy koncentrácie.</p>
+      </div>
+      <div class="card">
+        <h3>Telesné</h3>
+        <p>Kardiovaskulárne ochorenia, oslabená imunita, bolesti.</p>
+      </div>
+      <div class="card">
+        <h3>Sociálne</h3>
+        <p>Konflikty, izolácia, pokles pracovnej výkonnosti.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="coping">
+  <div class="container">
+    <h2>Zvládanie stresu</h2>
+    <div class="grid">
+      <div class="card"><h3>Kognitívne</h3><p>Práca s myšlienkami, sebareflexia.</p></div>
+      <div class="card"><h3>Behaviorálne</h3><p>Pohyb, režim, time management.</p></div>
+      <div class="card"><h3>Telesné</h3><p>Dych, relaxácia, mindfulness.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="test">
+  <div class="container">
+    <h2>Orientačný test stresu</h2>
+    <div class="card">
+      <div id="questions"></div>
+      <button id="evaluateBtn">Vyhodnotiť výsledok</button>
+      <div id="result"></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <h2>Časté otázky</h2>
+    <div class="card">
+      <h3>Je stres vždy zlý?</h3>
+      <p>Nie. Problémom je jeho intenzita a dĺžka trvania.</p>
+    </div>
+    <div class="card">
+      <h3>Kedy vyhľadať pomoc?</h3>
+      <p>Ak stres pretrváva a výrazne ovplyvňuje kvalitu života.</p>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <h2>O projekte</h2>
+    <div class="card">
+      <p>
+        Projekt slúži ako edukačný základ pre pochopenie stresu
+        a podporu duševného zdravia. Pracovali na ňom Adam Duč, Emma Dučová, Ema Porhinčáková, Mia Aurélia Martinková a Samuel Jacko.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="container">
+    <h2>Porozumenie je prvý krok k zmene</h2>
+    <p>Vedome pracuj so stresom a chráň svoje duševné zdravie.</p>
+    <a href="#" onclick="showMain(); return false;">Späť na test</a>
+  </div>
+</section>
+<section id="lifestyle" style="display:none">
+  <div class="container">
+    <h2>Zdravý životný štýl</h2>
+
+    <div class="card">
+      <p>
+        Životný štýl má zásadný vplyv na mieru stresu,
+        hormonálnu rovnováhu, kvalitu spánku a psychickú odolnosť.
+        Správna výživa a režim dokážu významne znížiť dopady stresu.
+      </p>
+    </div>
+
+    <!-- ===== STRAVA ===== -->
+    <div class="card">
+      <h3>Strava podporujúca zvládanie stresu</h3>
+      <p>
+        Výživa ovplyvňuje nervový systém, hladiny kortizolu,
+        serotonínu a celkovú energiu.
+      </p>
+
+      <ul>
+        <li><strong>Komplexné sacharidy:</strong> celozrnné obilniny, ovsené vločky, ryža</li>
+        <li><strong>Bielkoviny:</strong> ryby, vajcia, strukoviny, jogurt</li>
+        <li><strong>Zdravé tuky:</strong> orechy, semienka, olivový olej</li>
+        <li><strong>Mikroživiny:</strong> horčík, vitamíny skupiny B, omega-3</li>
+      </ul>
+
+      <div class="info">
+        Vyhýbaj sa nadmernému kofeínu, alkoholu a ultra-spracovaným potravinám –
+        zvyšujú stresovú odpoveď organizmu.
+      </div>
+    </div>
+
+    <!-- ===== UKÁŽKOVÝ JEDÁLNIČEK ===== -->
+    <div class="card">
+      <h3>Ukážkový denný jedálniček</h3>
+
+      <div class="grid">
+        <div class="card">
+          <h4>Raňajky</h4>
+          <p>Ovsené vločky, jogurt, ovocie, orechy</p>
+        </div>
+        <div class="card">
+          <h4>Desiata</h4>
+          <p>Banán alebo jablko, hrsť mandlí</p>
+        </div>
+        <div class="card">
+          <h4>Obed</h4>
+          <p>Losos / strukoviny, ryža alebo quinoa, zelenina</p>
+        </div>
+        <div class="card">
+          <h4>Olovrant</h4>
+          <p>Jogurt alebo tvaroh</p>
+        </div>
+        <div class="card">
+          <h4>Večera</h4>
+          <p>Ľahké jedlo – zelenina, vajcia, polievka</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== REŽIM ===== -->
+    <div class="card">
+      <h3>Denný režim proti stresu</h3>
+      <ul>
+        <li>Pravidelný spánok (7–9 hodín)</li>
+        <li>Pravidelný pohyb (aspoň 30 minút denne)</li>
+        <li>Pauzy počas práce</li>
+        <li>Obmedzenie obrazoviek večer</li>
+        <li>Vedomý oddych a regenerácia</li>
+      </ul>
+    </div>
+
+    <!-- ===== NÁVRAT ===== -->
+    <div style="text-align:center">
+      <button onclick="showMain(); return false;">Späť na hlavnú stránku</button>
+
+    </div>
+  </div>
+</section>
+<section id="mealplan" style="display:none">
+  <div class="container">
+    <h2>Týždenný jedálniček proti stresu</h2>
+
+    <div class="grid">
+      <button onclick="showDay('mon'); return false;">Pondelok</button>
+      <button onclick="showDay('tue'); return false;">Utorok</button>
+      <button onclick="showDay('wed'); return false;">Streda</button>
+      <button onclick="showDay('thu'); return false;">Štvrtok</button>
+      <button onclick="showDay('fri'); return false;">Piatok</button>
+      <button onclick="showDay('sat'); return false;">Sobota</button>
+      <button onclick="showDay('sun'); return false;">Nedeľa</button>
+    </div>
+
+    <div id="dayContent" class="card" style="margin-top:2rem">
+      <p>Vyber deň.</p>
+    </div>
+
+    <div style="text-align:center">
+      <button onclick="showMain(); return false;">Späť na hlavnú stránku</button>
+    </div>
+  </div>
+</section>
+<section id="sleep" style="display:none">
+  <div class="container">
+    <h2>Zdravý spánok</h2>
+
+    <div class="card">
+      <ul>
+        <li>7–9 hodín spánku</li>
+        <li>Bez mobilu pred spaním</li>
+        <li>Rovnaký čas zaspávania</li>
+        <li>Chladná, tmavá miestnosť</li>
+      </ul>
+    </div>
+
+    <div style="text-align:center">
+      <button onclick="showMain(); return false;">Späť na hlavnú stránku</button>
+    </div>
+  </div>
+</section>
+<section id="movement" style="display:none">
+  <div class="container">
+    <h2>Pohyb proti stresu</h2>
+
+    <div class="grid">
+      <div class="card">🚶 Chôdza – 30 min</div>
+      <div class="card">🏃 Beh – 20 min</div>
+      <div class="card">🧘 Joga / stretching</div>
+      <div class="card">🏋️ Silový tréning</div>
+    </div>
+
+    <div style="text-align:center">
+      <button onclick="showMain(); return false;">Späť na hlavnú stránku</button>
+    </div>
+  </div>
+</section>
+<footer>
+  © 2026 – Edukačný projekt | Duševné zdravie
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+
+const questions=[
+"Cítim sa psychicky vyčerpaný.",
+"Mám problém vypnúť myšlienky.",
+"Mám zhoršený spánok.",
+"Cítim dlhodobý tlak.",
+"Som podráždenejší než zvyčajne.",
+"Mám problém so sústredením.",
+"Pociťujem telesné napätie.",
+"Mám pocit straty kontroly."
+];
+
+const qBox=document.getElementById("questions");
+const result=document.getElementById("result");
+const btn=document.getElementById("evaluateBtn");
+
+qBox.innerHTML=questions.map((q,i)=>`
+<div class="test-question">
+<label>${i+1}. ${q}</label>
+<select id="q${i}">
+<option value="">— vyber —</option>
+<option value="0">Vôbec nie</option>
+<option value="1">Občas</option>
+<option value="2">Často</option>
+<option value="3">Takmer stále</option>
+</select>
+</div>`).join("");
+
+btn.addEventListener("click",()=>{
+let score=0;
+for(let i=0;i<questions.length;i++){
+const v=document.getElementById("q"+i).value;
+if(v===""){alert("Vyplň všetky otázky.");return;}
+score+=Number(v);
+}
+if(score<=6){
+result.className="result low";
+result.innerHTML="<strong>Nízka úroveň stresu</strong>";
+}else if(score<=14){
+result.className="result mid";
+result.innerHTML="<strong>Stredná úroveň stresu</strong>";
+}else{
+result.className="result high";
+result.innerHTML="<strong>Vysoká úroveň stresu</strong>";
+}
+result.innerHTML+="<small>Orientačný test – nenahrádza odbornú diagnostiku.</small>";
+result.scrollIntoView({behavior:"smooth"});
+});
+
+});
+</script>
+<style>
+/* ===== FAQ AKORDEÓN ===== */
+.faq-item{
+  border-radius:18px;
+  background:rgba(255,255,255,.08);
+  margin-bottom:1.2rem;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.12);
+}
+.faq-question{
+  padding:1.6rem 2rem;
+  cursor:pointer;
+  font-weight:800;
+  position:relative;
+}
+.faq-question::after{
+  content:"+";
+  position:absolute;
+  right:2rem;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:1.5rem;
+}
+.faq-item.active .faq-question::after{
+  content:"–";
+}
+.faq-answer{
+  max-height:0;
+  overflow:hidden;
+  padding:0 2rem;
+  transition:max-height .4s ease, padding .4s ease;
+  color:#9aa4b2;
+}
+.faq-item.active .faq-answer{
+  max-height:300px;
+  padding:0 2rem 1.6rem;
+}
+</style>
+
+<section id="faq-advanced">
+  <div class="container">
+    <h2>Rozšírené otázky a odpovede</h2>
+
+    <div class="faq-item">
+      <div class="faq-question">Ako zistím, že je stres už nebezpečný?</div>
+      <div class="faq-answer">
+        Ak stres pretrváva dlhodobo, ovplyvňuje spánok, emócie, zdravie
+        alebo vzťahy, ide o varovný signál.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Môže stres spôsobiť fyzické ochorenia?</div>
+      <div class="faq-answer">
+        Áno. Chronický stres zvyšuje riziko kardiovaskulárnych,
+        tráviacich a imunitných porúch.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question">Stačí oddych na zvládnutie stresu?</div>
+      <div class="faq-answer">
+        Oddych je dôležitý, ale často je potrebná aj zmena návykov,
+        myslenia alebo odborná pomoc.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+document.querySelectorAll(".faq-question").forEach(q=>{
+  q.addEventListener("click",()=>{
+    q.parentElement.classList.toggle("active");
+  });
+});
+</script>
+
+<!-- =====================================================
+     ====== MODUL 2: PERSONALIZOVANÉ ODPORÚČANIA ======
+     👉 AUTOMATICKY SA NAPOJÍ NA TEST
+===================================================== -->
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+
+const resultBox=document.getElementById("result");
+
+const observer=new MutationObserver(()=>{
+  if(resultBox.classList.contains("low")){
+    resultBox.innerHTML+=`
+      <p><strong>Odporúčanie:</strong> Udržuj zdravý režim,
+      venuj sa pohybu a prevencii.</p>`;
+  }
+  if(resultBox.classList.contains("mid")){
+    resultBox.innerHTML+=`
+      <p><strong>Odporúčanie:</strong> Zváž úpravu denného režimu,
+      viac oddychu a vedomú prácu so stresom.</p>`;
+  }
+  if(resultBox.classList.contains("high")){
+    resultBox.innerHTML+=`
+      <p><strong>Odporúčanie:</strong> Odporúča sa systematická zmena
+      a konzultácia s odborníkom.</p>`;
+  }
+});
+
+observer.observe(resultBox,{attributes:true});
+});
+</script>
+
+<!-- =====================================================
+     ====== MODUL 3: ULOŽENIE VÝSLEDKU (localStorage) ======
+     👉 AUTOMATICKY UKLADÁ POSLEDNÝ VÝSLEDOK
+===================================================== -->
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+
+const btn=document.getElementById("evaluateBtn");
+const result=document.getElementById("result");
+
+btn.addEventListener("click",()=>{
+  localStorage.setItem("lastStressResult",result.innerHTML);
+});
+
+const saved=localStorage.getItem("lastStressResult");
+if(saved){
+  result.innerHTML=saved;
+}
+});
+</script>
+
+
+
+<script>
+/* =====================================================
+   SPA NAVIGÁCIA – JEDNA STRÁNKA, VIAC OBRAZOVIEK
+===================================================== */
+
+/* ===== SKRYJE VŠETKY SEKCIE ===== */
+function hideAllSections(){
+  document.querySelectorAll("section").forEach(section=>{
+    section.style.display = "none";
+  });
+}
+
+/* ===== ZOBRAZÍ DOMOV (HLAVNÚ OBRAZOVKU) ===== */
+function showMain(){
+  document.querySelectorAll("section").forEach(section=>{
+    if(
+      section.id === "lifestyle" ||
+      section.id === "mealplan" ||
+      section.id === "sleep" ||
+      section.id === "movement"
+    ){
+      section.style.display = "none";
+    } else {
+      section.style.display = "block";
+    }
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ===== PODSTRÁNKY (OBRAZOVKY) ===== */
+function openLifestyle(){
+  hideAllSections();
+  document.getElementById("lifestyle").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openMealplan(){
+  hideAllSections();
+  document.getElementById("mealplan").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openSleep(){
+  hideAllSections();
+  document.getElementById("sleep").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openMovement(){
+  hideAllSections();
+  document.getElementById("movement").style.display = "block";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ===== TÝŽDENNÝ JEDÁLNIČEK ===== */
+function showDay(day){
+  const days = {
+    mon: "🥣 Raňajky: ovsené vločky • 🐟 Obed: losos • 🥗 Večera: zelenina",
+    tue: "🍳 Raňajky: vajcia • 🍗 Obed: kura • 🍲 Večera: polievka",
+    wed: "🥤 Raňajky: smoothie • 🌱 Obed: tofu • 🥗 Večera: šalát",
+    thu: "🍞 Raňajky: celozrnné • 🐠 Obed: ryba • 🥦 Večera: zelenina",
+    fri: "🥣 Raňajky: vločky • 🫘 Obed: strukoviny • 🍽️ Večera: ľahká",
+    sat: "🍓 Raňajky: ovocie • 🍛 Obed: domáce • 😌 Večera: voľná",
+    sun: "☀️ Regeneračný deň – ľahká a prirodzená strava"
+  };
+
+  document.getElementById("dayContent").innerHTML =
+    "<p><strong>" + days[day] + "</strong></p>";
+}
+
+/* ===== PRI NAČÍTANÍ STRÁNKY ===== */
+document.addEventListener("DOMContentLoaded", showMain);
+
+</script>
+
+</body>
+</html>
